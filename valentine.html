@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Valentine?</title>
+<style>
+  body {
+    font-family: system-ui,-apple-system,sans-serif;
+    text-align: center;
+    margin: 0;
+    padding: 40px;
+    background: #ffe6e6;
+  }
+  h1 {
+    font-size: 1.8rem;
+    color: #e11;
+    margin-bottom: 30px;
+  }
+  #container {
+    position: relative;
+    width: 100%;
+    max-width: 500px;
+    height: 300px;
+    margin: 0 auto;
+    border: 2px dashed #e11;
+    border-radius: 12px;
+  }
+  a {
+    display: inline-block;
+    padding: 14px 26px;
+    font-size: 1.2rem;
+    text-decoration: none;
+    border-radius: 8px;
+    color: #fff;
+    cursor: pointer;
+    user-select: none;
+  }
+  #yes { background: #e11; position: relative; z-index: 2; }
+  #no { background: #555; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); z-index: 1; }
+</style>
+</head>
+<body>
+
+<h1>Will you be my Valentine?</h1>
+<div id="container">
+  <a id="yes" href="mailto:you@email.com?subject=Yes!">Yes ❤️</a>
+  <a id="no" href="#">No</a>
+</div>
+
+<script>
+const no = document.getElementById('no');
+const container = document.getElementById('container');
+
+function moveNo() {
+  const maxX = container.clientWidth - no.offsetWidth;
+  const maxY = container.clientHeight - no.offsetHeight;
+  const left = Math.random() * maxX;
+  const top = Math.random() * maxY;
+  no.style.left = left + 'px';
+  no.style.top = top + 'px';
+}
+
+no.addEventListener('mouseover', moveNo);   // desktop hover
+no.addEventListener('touchstart', e => {   // mobile tap
+  e.preventDefault();
+  moveNo();
+});
+</script>
+
+</body>
+</html>
