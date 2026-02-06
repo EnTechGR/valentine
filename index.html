@@ -1,134 +1,122 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta property="og:title" content="A Special Message for You ❤️">
 <meta property="og:description" content="Open this link to see your surprise!">
 <meta property="og:image" content="https://entechgr.github.io/valentine/preview-thumbnail.png">
 <meta name="theme-color" content="#ff4d6d">
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Be My Valentine?</title>
 <style>
   :root {
     --primary: #ff4d6d;
     --secondary: #c9184a;
-    --glass: rgba(255, 255, 255, 0.25);
-    --glass-border: rgba(255, 255, 255, 0.4);
+    --glass: rgba(255, 255, 255, 0.4);
+    --glass-border: rgba(255, 255, 255, 0.6);
+  }
+
+  * {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent; /* Removes blue flash on tap */
   }
 
   body {
     margin: 0;
     padding: 0;
     overflow: hidden;
+    /* Uses dvh (Dynamic Viewport Height) for mobile browser bars */
     height: 100vh;
+    height: 100dvh; 
     display: flex;
     justify-content: center;
     align-items: center;
-    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-    /* Soft mesh gradient background */
-    background: radial-gradient(circle at 20% 30%, #ffccd5 0%, #fff0f3 100%);
-    transition: background 3s ease;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: #fff0f3;
+    transition: background-color 3s ease;
   }
 
-  /* Animated background shapes */
   .bg-shape {
     position: absolute;
     z-index: -1;
-    filter: blur(50px);
+    filter: blur(40px);
     border-radius: 50%;
-    opacity: 0.6;
-    animation: move 20s infinite alternate;
+    opacity: 0.5;
+    animation: move 15s infinite alternate ease-in-out;
   }
 
   @keyframes move {
-    from { transform: translate(0, 0); }
-    to { transform: translate(100px, 100px); }
+    from { transform: translate(-5%, -5%); }
+    to { transform: translate(10%, 10%); }
   }
 
-  /* The Glass Card */
   .card {
     background: var(--glass);
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
-    border: 1px solid var(--glass-border);
-    padding: 3rem;
-    border-radius: 30px;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1.5px solid var(--glass-border);
+    padding: 2.5rem 1.5rem;
+    border-radius: 24px;
     text-align: center;
-    box-shadow: 0 8px 32px 0 rgba(255, 77, 109, 0.2);
+    box-shadow: 0 10px 40px rgba(255, 77, 109, 0.15);
     z-index: 10;
-    max-width: 400px;
-    width: 90%;
-    transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    width: 85%;
+    max-width: 350px;
+    transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
   }
 
   h1 {
     color: var(--secondary);
-    font-size: 2.2rem;
-    margin-bottom: 2rem;
+    font-size: clamp(1.5rem, 7vw, 2rem); /* Fluid typography */
+    margin: 1rem 0 2rem;
     font-weight: 800;
-  }
-
-  .btn-group {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    height: 60px;
-    align-items: center;
+    line-height: 1.2;
   }
 
   .btn {
-    padding: 12px 35px;
+    padding: 14px 32px;
     font-size: 1.1rem;
     font-weight: bold;
     border-radius: 50px;
     border: none;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: transform 0.2s active;
     text-decoration: none;
     display: inline-block;
+    touch-action: manipulation; /* Prevents double-tap zoom */
   }
 
   #yes {
     background: var(--primary);
     color: white;
-    box-shadow: 0 4px 15px rgba(255, 77, 109, 0.4);
-    z-index: 11;
-  }
-
-  #yes:hover {
-    transform: scale(1.15);
-    background: var(--secondary);
+    box-shadow: 0 4px 15px rgba(255, 77, 109, 0.3);
   }
 
   #no {
     background: #590d22;
     color: white;
-    position: fixed; /* Necessary for orbit logic */
+    position: fixed;
     z-index: 100;
-    white-space: nowrap;
-    transition: left 0.4s cubic-bezier(0.18, 0.89, 0.32, 1.28), 
-                top 0.4s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+    /* Faster transition for mobile responsiveness */
+    transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
   }
 
-  /* Heart and Decorative elements */
   .heart-icon {
-    font-size: 3rem;
-    margin-bottom: 10px;
+    font-size: 3.5rem;
     display: block;
     animation: pulse 1.5s infinite;
   }
 
   @keyframes pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.2); }
-    100% { transform: scale(1); }
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.15); }
   }
 
   #message {
     display: none;
-    font-size: 1.8rem;
+    font-size: 1.4rem;
     color: var(--secondary);
-    font-weight: bold;
+    line-height: 1.4;
   }
 
   .heart-particle {
@@ -139,25 +127,25 @@
   }
 
   @keyframes fly {
-    to { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+    to { transform: translateY(-110dvh) rotate(360deg); opacity: 0; }
   }
 </style>
 </head>
 <body>
 
-<div class="bg-shape" style="width: 300px; height: 300px; background: #ffb3c1; top: -50px; left: -50px;"></div>
-<div class="bg-shape" style="width: 400px; height: 400px; background: #ff85a1; bottom: -100px; right: -50px; animation-delay: -5s;"></div>
+<div class="bg-shape" style="width: 250px; height: 250px; background: #ffb3c1; top: -20px; left: -20px;"></div>
+<div class="bg-shape" style="width: 300px; height: 300px; background: #ff85a1; bottom: -50px; right: -20px; animation-delay: -5s;"></div>
 
 <div class="card" id="mainCard">
   <span class="heart-icon">💖</span>
   <h1 id="question">Will you be my Valentine?</h1>
   
-  <div class="btn-group" id="btnGroup">
+  <div id="btnGroup">
     <a id="yes" class="btn" href="#">Yes!</a>
   </div>
 
   <div id="message">
-    <p>Yay! See you on our date! 🌹</p>
+    <p>Yay! See you on our date! 🌹<br><small style="font-size: 0.8rem; opacity: 0.8;">(I'll text you the details)</small></p>
   </div>
 </div>
 
@@ -171,83 +159,79 @@ const question = document.getElementById('question');
 const message = document.getElementById('message');
 const btnGroup = document.getElementById('btnGroup');
 
-/**
- * 1️⃣ Robust Orbit Logic
- * Ensures 'No' stays in a specific ring outside the card's boundaries.
- */
+// 1️⃣ Optimized Mobile Orbit
 function moveNo() {
   const cardRect = card.getBoundingClientRect();
-  const padding = 100; // Keep at least 100px away from the card center
   
-  // Calculate a random angle
+  // Angle + tighter radius for mobile screens
   const angle = Math.random() * Math.PI * 2;
-  // Radius: Card width + some random variation
-  const radius = (cardRect.width / 2) + 80 + (Math.random() * 50);
+  const radius = Math.min(window.innerWidth * 0.35, 140); 
   
   const centerX = window.innerWidth / 2;
   const centerY = window.innerHeight / 2;
 
-  const x = centerX + radius * Math.cos(angle) - (no.offsetWidth / 2);
-  const y = centerY + radius * Math.sin(angle) - (no.offsetHeight / 2);
+  let x = centerX + radius * Math.cos(angle) - (no.offsetWidth / 2);
+  let y = centerY + radius * Math.sin(angle) - (no.offsetHeight / 2);
 
-  // Bounds checking to stay on screen
-  const safeX = Math.max(20, Math.min(x, window.innerWidth - no.offsetWidth - 20));
-  const safeY = Math.max(20, Math.min(y, window.innerHeight - no.offsetHeight - 20));
+  // Strict Screen Collisions (Padding of 15px)
+  x = Math.max(15, Math.min(x, window.innerWidth - no.offsetWidth - 15));
+  y = Math.max(15, Math.min(y, window.innerHeight - no.offsetHeight - 15));
 
-  no.style.left = `${safeX}px`;
-  no.style.top = `${safeY}px`;
+  no.style.left = `${x}px`;
+  no.style.top = `${y}px`;
 }
 
-// Initial Position
+// Initial placement
 moveNo();
-no.addEventListener('mouseover', moveNo);
-no.addEventListener('touchstart', (e) => { e.preventDefault(); moveNo(); });
 
-/**
- * 2️⃣ Fancy Background & Heart Particles
- */
-const colors = ['#fff0f3', '#ffccd5', '#ffb3c1', '#ff85a1', '#f7cad0'];
+// Mobile-first events: Use 'touchstart' for zero-latency dodging
+no.addEventListener('touchstart', (e) => {
+  e.preventDefault(); 
+  moveNo();
+});
+no.addEventListener('mouseover', moveNo);
+
+// 2️⃣ Background Color Rotation
+const colors = ['#fff0f3', '#ffccd5', '#ffb3c1', '#f7cad0'];
 let colorIndex = 0;
 setInterval(() => {
   document.body.style.backgroundColor = colors[colorIndex];
   colorIndex = (colorIndex + 1) % colors.length;
 }, 4000);
 
+// 3️⃣ Particle System
 function spawnHeart() {
   const heart = document.createElement('div');
-  heart.innerHTML = '❤️';
+  heart.innerHTML = ['❤️','💖','🌸','✨'][Math.floor(Math.random()*4)];
   heart.className = 'heart-particle';
   heart.style.left = Math.random() * 100 + 'vw';
-  heart.style.top = '105vh';
-  heart.style.fontSize = (Math.random() * 20 + 10) + 'px';
-  heart.style.opacity = Math.random();
-  heart.style.animationDuration = (Math.random() * 3 + 4) + 's';
+  heart.style.top = '105dvh';
+  heart.style.fontSize = (Math.random() * 15 + 15) + 'px';
+  heart.style.animationDuration = (Math.random() * 2 + 3) + 's';
   document.body.appendChild(heart);
-  setTimeout(() => heart.remove(), 7000);
+  setTimeout(() => heart.remove(), 5000);
 }
-setInterval(spawnHeart, 400);
+setInterval(spawnHeart, 600);
 
-/**
- * 3️⃣ Success UI Transition
- */
+// 4️⃣ The "Yes" Sequence
 yes.addEventListener('click', (e) => {
   e.preventDefault();
-  
-  // Clean up
   no.style.display = 'none';
   question.style.display = 'none';
   btnGroup.style.display = 'none';
   
-  // Show Message
   message.style.display = 'block';
-  card.style.transform = 'scale(1.1)';
-  card.style.background = 'rgba(255, 255, 255, 0.4)';
+  card.style.transform = 'scale(1.05)';
+  card.style.background = 'rgba(255, 255, 255, 0.6)';
 
-  // Bursts of hearts
-  for(let i=0; i<30; i++) {
-    setTimeout(spawnHeart, i * 50);
+  // Celebration burst
+  for(let i=0; i<40; i++) {
+    setTimeout(spawnHeart, i * 40);
   }
 });
+
+// Fix for mobile height issues on resize
+window.addEventListener('resize', moveNo);
 </script>
 
 </body>
