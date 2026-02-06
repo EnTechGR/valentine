@@ -15,49 +15,57 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background: linear-gradient(45deg, #f3e5f5, #e1bee7);
-    transition: background 5s ease;
+    background-color: #f3e5f5;
+    transition: background-color 3s ease-in-out;
+  }
+
+  #main-ui {
+    text-align: center;
+    transition: opacity 0.5s ease, transform 0.5s ease;
+    z-index: 10;
   }
 
   h1 {
-    font-size: 2rem;
+    font-size: 2.5rem;
     color: #7b1fa2;
-    margin-bottom: 20px;
-    text-align: center;
+    margin-bottom: 60px; /* Increased margin to prevent No button overlap */
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
   }
 
   #container {
     position: relative;
     width: 100%;
-    max-width: 500px;
-    height: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
   a {
     display: inline-block;
-    padding: 14px 26px;
+    padding: 14px 28px;
     font-size: 1.2rem;
     text-decoration: none;
-    border-radius: 8px;
+    border-radius: 50px;
     color: #fff;
     cursor: pointer;
     user-select: none;
     font-weight: bold;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
   }
 
   #yes {
     background: #d81b60;
     position: relative;
-    z-index: 2;
+    z-index: 5;
+    transition: transform 0.2s;
   }
 
   #no {
     background: #6a1b9a;
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 2;
+    position: fixed;
+    z-index: 100; /* High z-index but logic keeps it away from center */
+    transition: left 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), 
+                top 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   }
 
   /* Hearts animation */
@@ -67,14 +75,10 @@
     height: 20px;
     background: pink;
     transform: rotate(45deg);
-    left: 0;
-    top: 0;
-    opacity: 0.8;
     pointer-events: none;
     animation: fall linear infinite;
   }
-  .heart::before,
-  .heart::after {
+  .heart::before, .heart::after {
     content: '';
     position: absolute;
     width: 20px;
@@ -90,121 +94,145 @@
     100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
   }
 
-  #confetti {
-    position: fixed;
-    top:0;
-    left:0;
-    width: 100%;
-    height: 100%;
-    pointer-events:none;
-    z-index: 999;
-  }
-
   #message {
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-size: 2rem;
+    font-size: 2.5rem;
     color: #d81b60;
-    background: rgba(255,255,255,0.85);
-    padding: 20px 40px;
-    border-radius: 16px;
+    background: rgba(255,255,255,0.95);
+    padding: 40px 60px;
+    border-radius: 30px;
     text-align: center;
     display: none;
     z-index: 1000;
+    box-shadow: 0 15px 50px rgba(0,0,0,0.15);
   }
 </style>
 </head>
 <body>
 
-<h1>Will you be my Valentine?</h1>
-<div id="container">
-  <a id="yes" href="#">Yes ❤️</a>
-  <a id="no" href="#">No</a>
+<div id="main-ui">
+  <h1>Will you be my Valentine?</h1>
+  <div id="container">
+    <a id="yes" href="#">Yes ❤️</a>
+  </div>
 </div>
 
-<div id="confetti"></div>
+<a id="no" href="#">No</a>
+
+<div id="confetti" style="position:fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:999;"></div>
 <div id="message">See you for our date ❤️</div>
 
 <script>
 const no = document.getElementById('no');
 const yes = document.getElementById('yes');
 const message = document.getElementById('message');
+const mainUI = document.getElementById('main-ui');
 const body = document.body;
 
-// 1️⃣ Move "No" within screen boundaries
+/**
+ * 1️⃣ Improved Orbit Logic
+ * Keeps 'No' away from both the 'Yes' button and the <h1> text.
+ */
 function moveNo() {
-  const maxX = window.innerWidth - no.offsetWidth;
-  const maxY = window.innerHeight - no.offsetHeight;
-  const left = Math.random() * maxX;
-  const top = Math.random() * maxY;
-  no.style.left = left + 'px';
-  no.style.top = top + 'px';
+  // Radius keeps it away from Yes. 
+  // Minimum 160px ensures it doesn't touch the header or central button.
+  const radius = 160 + (Math.random() * 40); 
+  const angle = Math.random() * Math.PI * 2;
+  
+  const centerX = window.innerWidth / 2;
+  const centerY = window.innerHeight / 2;
+
+  const x = centerX + radius * Math.cos(angle) - (no.offsetWidth / 2);
+  const y = centerY + radius * Math.sin(angle) - (no.offsetHeight / 2);
+
+  no.style.left = `${x}px`;
+  no.style.top = `${y}px`;
 }
 
-// Move No every 800ms
-let noInterval = setInterval(moveNo, 800);
-
-// Hover/tap move
+moveNo();
+let noInterval = setInterval(moveNo, 1800);
 no.addEventListener('mouseover', moveNo);
 no.addEventListener('touchstart', e => { e.preventDefault(); moveNo(); });
 
-// 2️⃣ Smooth background color cycle
-const colors = ['#f3e5f5','#e1bee7','#ce93d8','#ba68c8','#ab47bc'];
-let i = 0;
+/**
+ * 2️⃣ Smoother Background
+ */
+const colors = ['#f3e5f5', '#fce4ec', '#f8bbd0', '#e1bee7', '#d1c4e9'];
+let colorIndex = 0;
 setInterval(() => {
-  body.style.background = `linear-gradient(45deg, ${colors[i]}, ${colors[(i+1)%colors.length]})`;
-  i = (i + 1) % colors.length;
-}, 5000); // smoother, slower transitions
+  body.style.backgroundColor = colors[colorIndex];
+  colorIndex = (colorIndex + 1) % colors.length;
+}, 3000);
 
-// 3️⃣ Falling hearts
+/**
+ * 3️⃣ Falling hearts
+ */
 function createHeart() {
   const heart = document.createElement('div');
   heart.className = 'heart';
   heart.style.left = Math.random() * window.innerWidth + 'px';
-  heart.style.animationDuration = (2 + Math.random() * 3) + 's';
-  const size = 10 + Math.random() * 20;
+  heart.style.animationDuration = (3 + Math.random() * 2) + 's';
+  const size = 12 + Math.random() * 15;
   heart.style.width = heart.style.height = size + 'px';
   body.appendChild(heart);
   setTimeout(() => heart.remove(), 5000);
 }
-setInterval(createHeart, 300);
+setInterval(createHeart, 400);
 
-// 4️⃣ Confetti effect for Yes button
+/**
+ * 4️⃣ Yes button click with UI cleanup
+ */
+yes.addEventListener('click', e => {
+  e.preventDefault();
+  clearInterval(noInterval);
+  
+  // Fade out the question and buttons to prevent overlap
+  mainUI.style.opacity = '0';
+  mainUI.style.transform = 'scale(0.8)';
+  no.style.display = 'none';
+
+  setTimeout(() => {
+    mainUI.style.display = 'none';
+    message.style.display = 'block';
+    createConfetti();
+  }, 500);
+  
+  body.style.backgroundColor = '#f06292';
+});
+
 function createConfetti() {
-  const confettiContainer = document.getElementById('confetti');
+  const container = document.getElementById('confetti');
   for (let i=0; i<100; i++){
     const c = document.createElement('div');
     c.style.position = 'absolute';
-    c.style.width = '6px';
-    c.style.height = '6px';
-    c.style.backgroundColor = ['#ff4081','#e1bee7','#ba68c8','#d81b60','#ce93d8'][Math.floor(Math.random()*5)];
-    c.style.left = Math.random() * window.innerWidth + 'px';
-    c.style.top = Math.random() * window.innerHeight + 'px';
-    c.style.opacity = 1;
-    c.style.transform = `rotate(${Math.random()*360}deg)`;
+    c.style.width = '8px';
+    c.style.height = '8px';
+    c.style.backgroundColor = ['#ff4081','#ba68c8','#d81b60','#ffffff'][Math.floor(Math.random()*4)];
+    c.style.left = Math.random() * 100 + 'vw';
+    c.style.top = '-10px';
     c.style.borderRadius = '50%';
-    confettiContainer.appendChild(c);
-    (function(el){
-      let fall = setInterval(()=>{
-        let top = parseFloat(el.style.top);
-        el.style.top = (top + Math.random()*10) + 'px';
-        el.style.opacity -= 0.02;
-        if(el.style.opacity <=0) { clearInterval(fall); el.remove();}
-      },30);
-    })(c);
+    container.appendChild(c);
+    
+    let top = -10;
+    let left = parseFloat(c.style.left);
+    let speed = 2 + Math.random() * 5;
+    let drift = Math.random() * 2 - 1;
+    
+    let fall = setInterval(()=>{
+      top += speed;
+      left += drift;
+      c.style.top = top + 'px';
+      c.style.left = left + 'px';
+      if(top > window.innerHeight) {
+        clearInterval(fall);
+        c.remove();
+      }
+    }, 20);
   }
 }
-
-// 5️⃣ Yes button click
-yes.addEventListener('click', e=>{
-  e.preventDefault();
-  clearInterval(noInterval);      // stop moving No
-  no.style.display = 'none';      // hide No button
-  createConfetti();
-  message.style.display = 'block';
-});
 </script>
 
 </body>
