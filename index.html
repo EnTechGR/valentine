@@ -1,135 +1,143 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta property="og:title" content="A Special Message for You ❤️">
-<meta property="og:description" content="Open this link to see your surprise!">
-<meta property="og:image" content="https://entechgr.github.io/valentine/preview-thumbnail.png">
-<meta name="theme-color" content="#ff4d6d">
-<title>Be My Valentine?</title>
-<style>
-  :root {
-    --primary: #ff4d6d;
-    --secondary: #c9184a;
-    --glass: rgba(255, 255, 255, 0.4);
-    --glass-border: rgba(255, 255, 255, 0.6);
-  }
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-SXWRQXZL13"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
 
-  * {
-    box-sizing: border-box;
-    -webkit-tap-highlight-color: transparent; /* Removes blue flash on tap */
-  }
+    gtag('config', 'G-SXWRQXZL13');
+  </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta property="og:title" content="A Special Message for You ❤️">
+    <meta property="og:description" content="Open this link to see your surprise!">
+    <meta property="og:image" content="https://entechgr.github.io/valentine/preview-thumbnail.png">
+    <meta name="theme-color" content="#ff4d6d">
+    <title>Be My Valentine?</title>
+    <style>
+      :root {
+        --primary: #ff4d6d;
+        --secondary: #c9184a;
+        --glass: rgba(255, 255, 255, 0.4);
+        --glass-border: rgba(255, 255, 255, 0.6);
+      }
 
-  body {
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    /* Uses dvh (Dynamic Viewport Height) for mobile browser bars */
-    height: 100vh;
-    height: 100dvh; 
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-    background: #fff0f3;
-    transition: background-color 3s ease;
-  }
+      * {
+        box-sizing: border-box;
+        -webkit-tap-highlight-color: transparent; /* Removes blue flash on tap */
+      }
 
-  .bg-shape {
-    position: absolute;
-    z-index: -1;
-    filter: blur(40px);
-    border-radius: 50%;
-    opacity: 0.5;
-    animation: move 15s infinite alternate ease-in-out;
-  }
+      body {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        /* Uses dvh (Dynamic Viewport Height) for mobile browser bars */
+        height: 100vh;
+        height: 100dvh; 
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        background: #fff0f3;
+        transition: background-color 3s ease;
+      }
 
-  @keyframes move {
-    from { transform: translate(-5%, -5%); }
-    to { transform: translate(10%, 10%); }
-  }
+      .bg-shape {
+        position: absolute;
+        z-index: -1;
+        filter: blur(40px);
+        border-radius: 50%;
+        opacity: 0.5;
+        animation: move 15s infinite alternate ease-in-out;
+      }
 
-  .card {
-    background: var(--glass);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1.5px solid var(--glass-border);
-    padding: 2.5rem 1.5rem;
-    border-radius: 24px;
-    text-align: center;
-    box-shadow: 0 10px 40px rgba(255, 77, 109, 0.15);
-    z-index: 10;
-    width: 85%;
-    max-width: 350px;
-    transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-  }
+      @keyframes move {
+        from { transform: translate(-5%, -5%); }
+        to { transform: translate(10%, 10%); }
+      }
 
-  h1 {
-    color: var(--secondary);
-    font-size: clamp(1.5rem, 7vw, 2rem); /* Fluid typography */
-    margin: 1rem 0 2rem;
-    font-weight: 800;
-    line-height: 1.2;
-  }
+      .card {
+        background: var(--glass);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1.5px solid var(--glass-border);
+        padding: 2.5rem 1.5rem;
+        border-radius: 24px;
+        text-align: center;
+        box-shadow: 0 10px 40px rgba(255, 77, 109, 0.15);
+        z-index: 10;
+        width: 85%;
+        max-width: 350px;
+        transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+      }
 
-  .btn {
-    padding: 14px 32px;
-    font-size: 1.1rem;
-    font-weight: bold;
-    border-radius: 50px;
-    border: none;
-    cursor: pointer;
-    transition: transform 0.2s active;
-    text-decoration: none;
-    display: inline-block;
-    touch-action: manipulation; /* Prevents double-tap zoom */
-  }
+      h1 {
+        color: var(--secondary);
+        font-size: clamp(1.5rem, 7vw, 2rem); /* Fluid typography */
+        margin: 1rem 0 2rem;
+        font-weight: 800;
+        line-height: 1.2;
+      }
 
-  #yes {
-    background: var(--primary);
-    color: white;
-    box-shadow: 0 4px 15px rgba(255, 77, 109, 0.3);
-  }
+      .btn {
+        padding: 14px 32px;
+        font-size: 1.1rem;
+        font-weight: bold;
+        border-radius: 50px;
+        border: none;
+        cursor: pointer;
+        transition: transform 0.2s active;
+        text-decoration: none;
+        display: inline-block;
+        touch-action: manipulation; /* Prevents double-tap zoom */
+      }
 
-  #no {
-    background: #590d22;
-    color: white;
-    position: fixed;
-    z-index: 100;
-    /* Faster transition for mobile responsiveness */
-    transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
-  }
+      #yes {
+        background: var(--primary);
+        color: white;
+        box-shadow: 0 4px 15px rgba(255, 77, 109, 0.3);
+      }
 
-  .heart-icon {
-    font-size: 3.5rem;
-    display: block;
-    animation: pulse 1.5s infinite;
-  }
+      #no {
+        background: #590d22;
+        color: white;
+        position: fixed;
+        z-index: 100;
+        /* Faster transition for mobile responsiveness */
+        transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+      }
 
-  @keyframes pulse {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.15); }
-  }
+      .heart-icon {
+        font-size: 3.5rem;
+        display: block;
+        animation: pulse 1.5s infinite;
+      }
 
-  #message {
-    display: none;
-    font-size: 1.4rem;
-    color: var(--secondary);
-    line-height: 1.4;
-  }
+      @keyframes pulse {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.15); }
+      }
 
-  .heart-particle {
-    position: fixed;
-    pointer-events: none;
-    z-index: 1;
-    animation: fly linear forwards;
-  }
+      #message {
+        display: none;
+        font-size: 1.4rem;
+        color: var(--secondary);
+        line-height: 1.4;
+      }
 
-  @keyframes fly {
-    to { transform: translateY(-110dvh) rotate(360deg); opacity: 0; }
-  }
-</style>
+      .heart-particle {
+        position: fixed;
+        pointer-events: none;
+        z-index: 1;
+        animation: fly linear forwards;
+      }
+
+      @keyframes fly {
+        to { transform: translateY(-110dvh) rotate(360deg); opacity: 0; }
+      }
+    </style>
 </head>
 <body>
 
