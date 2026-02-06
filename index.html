@@ -7,25 +7,32 @@
 <style>
   body {
     font-family: system-ui,-apple-system,sans-serif;
-    text-align: center;
     margin: 0;
-    padding: 40px;
-    background: #ffe6e6;
+    padding: 0;
+    overflow: hidden;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(45deg, #f3e5f5, #e1bee7);
+    transition: background 2s;
   }
+
   h1 {
-    font-size: 1.8rem;
-    color: #e11;
-    margin-bottom: 30px;
+    font-size: 2rem;
+    color: #7b1fa2;
+    margin-bottom: 20px;
+    text-align: center;
   }
+
   #container {
     position: relative;
     width: 100%;
     max-width: 500px;
     height: 300px;
-    margin: 0 auto;
-    border: 2px dashed #e11;
-    border-radius: 12px;
   }
+
   a {
     display: inline-block;
     padding: 14px 26px;
@@ -35,9 +42,53 @@
     color: #fff;
     cursor: pointer;
     user-select: none;
+    font-weight: bold;
   }
-  #yes { background: #e11; position: relative; z-index: 2; }
-  #no { background: #555; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); z-index: 1; }
+
+  #yes {
+    background: #d81b60;
+    position: relative;
+    z-index: 2;
+  }
+
+  #no {
+    background: #6a1b9a;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+  }
+
+  /* Hearts animation */
+  .heart {
+    position: fixed;
+    width: 20px;
+    height: 20px;
+    background: pink;
+    transform: rotate(45deg);
+    left: 0;
+    top: 0;
+    opacity: 0.8;
+    pointer-events: none;
+    animation: fall linear infinite;
+  }
+  .heart::before,
+  .heart::after {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background: pink;
+    border-radius: 50%;
+  }
+  .heart::before { top: -10px; left: 0; }
+  .heart::after { left: 10px; top: 0; }
+
+  @keyframes fall {
+    0% { transform: translateY(-50px) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+  }
 </style>
 </head>
 <body>
@@ -51,21 +102,46 @@
 <script>
 const no = document.getElementById('no');
 const container = document.getElementById('container');
+const body = document.body;
 
+// Move "No" continuously
 function moveNo() {
-  const maxX = container.clientWidth - no.offsetWidth;
-  const maxY = container.clientHeight - no.offsetHeight;
+  const maxX = window.innerWidth - no.offsetWidth;
+  const maxY = window.innerHeight - no.offsetHeight;
   const left = Math.random() * maxX;
   const top = Math.random() * maxY;
   no.style.left = left + 'px';
   no.style.top = top + 'px';
 }
 
-no.addEventListener('mouseover', moveNo);   // desktop hover
-no.addEventListener('touchstart', e => {   // mobile tap
-  e.preventDefault();
-  moveNo();
-});
+// Move No every 800ms
+setInterval(moveNo, 800);
+
+// Also move on hover/touch
+no.addEventListener('mouseover', moveNo);
+no.addEventListener('touchstart', e => { e.preventDefault(); moveNo(); });
+
+// Background color cycle
+const colors = ['#f3e5f5','#e1bee7','#ce93d8','#ba68c8','#ab47bc'];
+let i = 0;
+setInterval(() => {
+  body.style.background = `linear-gradient(45deg, ${colors[i]}, ${colors[(i+1)%colors.length]})`;
+  i = (i + 1) % colors.length;
+}, 3000);
+
+// Hearts falling
+function createHeart() {
+  const heart = document.createElement('div');
+  heart.className = 'heart';
+  heart.style.left = Math.random() * window.innerWidth + 'px';
+  heart.style.animationDuration = (2 + Math.random() * 3) + 's';
+  heart.style.width = heart.style.height = (10 + Math.random() * 20) + 'px';
+  body.appendChild(heart);
+  setTimeout(() => heart.remove(), 5000);
+}
+
+// Create hearts periodically
+setInterval(createHeart, 300);
 </script>
 
 </body>
