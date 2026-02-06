@@ -16,7 +16,7 @@
     justify-content: center;
     align-items: center;
     background: linear-gradient(45deg, #f3e5f5, #e1bee7);
-    transition: background 2s;
+    transition: background 5s ease;
   }
 
   h1 {
@@ -90,7 +90,6 @@
     100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
   }
 
-  /* Confetti container */
   #confetti {
     position: fixed;
     top:0;
@@ -101,7 +100,6 @@
     z-index: 999;
   }
 
-  /* Message overlay */
   #message {
     position: fixed;
     top: 50%;
@@ -109,7 +107,7 @@
     transform: translate(-50%, -50%);
     font-size: 2rem;
     color: #d81b60;
-    background: rgba(255,255,255,0.8);
+    background: rgba(255,255,255,0.85);
     padding: 20px 40px;
     border-radius: 16px;
     text-align: center;
@@ -130,7 +128,6 @@
 <div id="message">See you for our date ❤️</div>
 
 <script>
-// Elements
 const no = document.getElementById('no');
 const yes = document.getElementById('yes');
 const message = document.getElementById('message');
@@ -147,19 +144,19 @@ function moveNo() {
 }
 
 // Move No every 800ms
-setInterval(moveNo, 800);
+let noInterval = setInterval(moveNo, 800);
 
 // Hover/tap move
 no.addEventListener('mouseover', moveNo);
 no.addEventListener('touchstart', e => { e.preventDefault(); moveNo(); });
 
-// 2️⃣ Background color cycle
+// 2️⃣ Smooth background color cycle
 const colors = ['#f3e5f5','#e1bee7','#ce93d8','#ba68c8','#ab47bc'];
 let i = 0;
 setInterval(() => {
   body.style.background = `linear-gradient(45deg, ${colors[i]}, ${colors[(i+1)%colors.length]})`;
   i = (i + 1) % colors.length;
-}, 3000);
+}, 5000); // smoother, slower transitions
 
 // 3️⃣ Falling hearts
 function createHeart() {
@@ -203,6 +200,8 @@ function createConfetti() {
 // 5️⃣ Yes button click
 yes.addEventListener('click', e=>{
   e.preventDefault();
+  clearInterval(noInterval);      // stop moving No
+  no.style.display = 'none';      // hide No button
   createConfetti();
   message.style.display = 'block';
 });
