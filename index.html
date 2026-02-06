@@ -6,7 +6,7 @@
 <title>Valentine?</title>
 <style>
   body {
-    font-family: system-ui,-apple-system,sans-serif;
+    font-family: system-ui, -apple-system, sans-serif;
     margin: 0;
     padding: 0;
     overflow: hidden;
@@ -89,22 +89,54 @@
     0% { transform: translateY(-50px) rotate(0deg); opacity: 1; }
     100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
   }
+
+  /* Confetti container */
+  #confetti {
+    position: fixed;
+    top:0;
+    left:0;
+    width: 100%;
+    height: 100%;
+    pointer-events:none;
+    z-index: 999;
+  }
+
+  /* Message overlay */
+  #message {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 2rem;
+    color: #d81b60;
+    background: rgba(255,255,255,0.8);
+    padding: 20px 40px;
+    border-radius: 16px;
+    text-align: center;
+    display: none;
+    z-index: 1000;
+  }
 </style>
 </head>
 <body>
 
 <h1>Will you be my Valentine?</h1>
 <div id="container">
-  <a id="yes" href="mailto:you@email.com?subject=Yes!">Yes ❤️</a>
+  <a id="yes" href="#">Yes ❤️</a>
   <a id="no" href="#">No</a>
 </div>
 
+<div id="confetti"></div>
+<div id="message">See you for our date ❤️</div>
+
 <script>
+// Elements
 const no = document.getElementById('no');
-const container = document.getElementById('container');
+const yes = document.getElementById('yes');
+const message = document.getElementById('message');
 const body = document.body;
 
-// Move "No" continuously
+// 1️⃣ Move "No" within screen boundaries
 function moveNo() {
   const maxX = window.innerWidth - no.offsetWidth;
   const maxY = window.innerHeight - no.offsetHeight;
@@ -117,11 +149,11 @@ function moveNo() {
 // Move No every 800ms
 setInterval(moveNo, 800);
 
-// Also move on hover/touch
+// Hover/tap move
 no.addEventListener('mouseover', moveNo);
 no.addEventListener('touchstart', e => { e.preventDefault(); moveNo(); });
 
-// Background color cycle
+// 2️⃣ Background color cycle
 const colors = ['#f3e5f5','#e1bee7','#ce93d8','#ba68c8','#ab47bc'];
 let i = 0;
 setInterval(() => {
@@ -129,19 +161,51 @@ setInterval(() => {
   i = (i + 1) % colors.length;
 }, 3000);
 
-// Hearts falling
+// 3️⃣ Falling hearts
 function createHeart() {
   const heart = document.createElement('div');
   heart.className = 'heart';
   heart.style.left = Math.random() * window.innerWidth + 'px';
   heart.style.animationDuration = (2 + Math.random() * 3) + 's';
-  heart.style.width = heart.style.height = (10 + Math.random() * 20) + 'px';
+  const size = 10 + Math.random() * 20;
+  heart.style.width = heart.style.height = size + 'px';
   body.appendChild(heart);
   setTimeout(() => heart.remove(), 5000);
 }
-
-// Create hearts periodically
 setInterval(createHeart, 300);
+
+// 4️⃣ Confetti effect for Yes button
+function createConfetti() {
+  const confettiContainer = document.getElementById('confetti');
+  for (let i=0; i<100; i++){
+    const c = document.createElement('div');
+    c.style.position = 'absolute';
+    c.style.width = '6px';
+    c.style.height = '6px';
+    c.style.backgroundColor = ['#ff4081','#e1bee7','#ba68c8','#d81b60','#ce93d8'][Math.floor(Math.random()*5)];
+    c.style.left = Math.random() * window.innerWidth + 'px';
+    c.style.top = Math.random() * window.innerHeight + 'px';
+    c.style.opacity = 1;
+    c.style.transform = `rotate(${Math.random()*360}deg)`;
+    c.style.borderRadius = '50%';
+    confettiContainer.appendChild(c);
+    (function(el){
+      let fall = setInterval(()=>{
+        let top = parseFloat(el.style.top);
+        el.style.top = (top + Math.random()*10) + 'px';
+        el.style.opacity -= 0.02;
+        if(el.style.opacity <=0) { clearInterval(fall); el.remove();}
+      },30);
+    })(c);
+  }
+}
+
+// 5️⃣ Yes button click
+yes.addEventListener('click', e=>{
+  e.preventDefault();
+  createConfetti();
+  message.style.display = 'block';
+});
 </script>
 
 </body>
